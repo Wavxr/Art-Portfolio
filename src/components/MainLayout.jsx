@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-import "../styles/tailwind.css";
+import React from "react";
 import DarkModeToggle from "./DarkModeToggle";
+import "../styles/tailwind.css";
 
-const MainLayout = () => {
-  const [activePage, setActivePage] = useState("Digital");
-  const [darkMode, setDarkMode] = useState(false);
+const MainLayout = ({ activePage, setActivePage, children }) => {
+  const [darkMode, setDarkMode] = React.useState(false);
 
-  // Page content for the right side
-  const pageContent = {
-    Digital: <p>Digital Art Portfolio</p>,
-    Traditional: <p>Traditional Art Portfolio</p>,
-    WaterColor: <p>Watercolor Art Portfolio</p>,
-    About: <p>About the Artist</p>,
-  };
-
-  // Toggle dark mode
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
@@ -29,7 +19,6 @@ const MainLayout = () => {
           darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
         }`}
       >
-        {/* Dark Mode Toggle */}
         <div className="mb-8 self-start">
           <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         </div>
@@ -47,7 +36,7 @@ const MainLayout = () => {
 
           {/* Links */}
           <nav className="space-y-4">
-            {["Digital", "Traditional", "WaterColor", "About"].map((page) => (
+            {["Digital", "Traditional", "WaterColor", "Haru", "About"].map((page) => (
               <button
                 key={page}
                 onClick={() => setActivePage(page)}
@@ -68,6 +57,8 @@ const MainLayout = () => {
                     ? "✏️"
                     : page === "WaterColor"
                     ? "🎨"
+                    : page === "Haru"
+                    ? "🐾"
                     : "📜"}
                 </span>
                 {page}
@@ -75,6 +66,30 @@ const MainLayout = () => {
             ))}
           </nav>
         </div>
+
+        {/* Important Links */}
+        {activePage === "About" && (
+          <div className="mt-4 space-y-2">
+            <a
+              href="https://instagram.com/0_nekoharu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`block text-center font-semibold ${
+                darkMode ? "text-pink-400 hover:text-pink-300" : "text-pink-500 hover:text-pink-400"
+              }`}
+            >
+              🌸 Instagram
+            </a>
+            <button
+              onClick={() => alert("Share this portfolio!")}
+              className={`block w-full text-center font-semibold ${
+                darkMode ? "text-blue-400 hover:text-blue-300" : "text-blue-500 hover:text-blue-400"
+              }`}
+            >
+              🔗 Share
+            </button>
+          </div>
+        )}
 
         {/* Footer */}
         <footer className="mt-auto text-center text-xs">
@@ -91,7 +106,7 @@ const MainLayout = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-4/5 p-12">{pageContent[activePage]}</div>
+      <div className="w-4/5 p-12">{children}</div>
     </div>
   );
 };
