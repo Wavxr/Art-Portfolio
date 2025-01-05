@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../styles/tailwind.css";
+import DarkModeToggle from "./DarkModeToggle";
 
 const MainLayout = () => {
   const [activePage, setActivePage] = useState("Digital");
+  const [darkMode, setDarkMode] = useState(false);
 
   // Page content for the right side
   const pageContent = {
@@ -12,10 +14,26 @@ const MainLayout = () => {
     About: <p>About the Artist</p>,
   };
 
+  // Toggle dark mode
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
   return (
-    <div className="flex h-screen font-inconsolata">
+    <div
+      className={`flex h-screen font-inconsolata transition-colors duration-300 ${
+        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+      }`}
+    >
       {/* Left Side */}
-      <div className="w-1/5 bg-blue-900 text-white p-10 flex flex-col">
+      <div
+        className={`w-1/5 p-10 flex flex-col transition-colors duration-300 ${
+          darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+        }`}
+      >
+        {/* Dark Mode Toggle */}
+        <div className="mb-8 self-start">
+          <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        </div>
+
         {/* Top Section */}
         <div className="mb-12">
           <div className="text-center mb-8">
@@ -35,8 +53,12 @@ const MainLayout = () => {
                 onClick={() => setActivePage(page)}
                 className={`flex items-center w-full px-4 py-2 rounded-md ${
                   activePage === page
-                    ? "bg-blue-700 text-yellow-300"
-                    : "hover:bg-blue-800"
+                    ? darkMode
+                      ? "bg-gray-600 text-yellow-300"
+                      : "bg-blue-500 text-white"
+                    : darkMode
+                    ? "hover:bg-gray-700"
+                    : "hover:bg-gray-100"
                 }`}
               >
                 <span className="mr-2">
@@ -54,39 +76,22 @@ const MainLayout = () => {
           </nav>
         </div>
 
-        {/* Important Links */}
-        {activePage === "About" && (
-          <div className="mt-4 space-y-2">
-            <a
-              href="https://instagram.com/0_nekoharu/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-center text-pink-500 font-semibold hover:text-pink-400"
-            >
-              🌸 Instagram
-            </a>
-            <button
-              onClick={() => alert("Share this portfolio!")}
-              className="block w-full text-center text-blue-500 font-semibold hover:text-blue-400"
-            >
-              🔗 Share
-            </button>
-          </div>
-        )}
-
         {/* Footer */}
-        <footer className="mt-auto text-center text-xs text-gray-400">
+        <footer className="mt-auto text-center text-xs">
           <p>
-            <a href="mailto:johnwaveraguilar@gmail.com" className="text-gray-300 hover:underline">johnwaveraguilar@gmail.com</a>
+            <a
+              href="mailto:johnwaveraguilar@gmail.com"
+              className="hover:underline"
+            >
+              johnwaveraguilar@gmail.com
+            </a>
           </p>
           <p>&copy; {new Date().getFullYear()}</p>
         </footer>
       </div>
 
       {/* Right Side */}
-      <div className="w-4/5 bg-gray-100 p-12">
-        {pageContent[activePage]}
-      </div>
+      <div className="w-4/5 p-12">{pageContent[activePage]}</div>
     </div>
   );
 };
