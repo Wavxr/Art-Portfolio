@@ -8,43 +8,56 @@
 @tailwind utilities;
 
 /* Polaroid container */
-.polaroid {
-  width: 400px; /* Fixed width */
-  background: white;
-  border: 1px solid #ccc;
+/* Base body styles */
+body {
+  font-family: 'Inconsolata', monospace;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
+/* Artwork grid container */
+.artwork-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 24px; /* Space between items */
+  padding: 20px;
+}
+
+/* Artwork card styling */
+.artwork-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 8px;
-  margin: 16px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  font-family: 'Inconsolata', monospace;
 }
 
-/* Image container to maintain aspect ratio */
-.polaroid-image-container {
+/* Image container with aspect ratio handling */
+.artwork-image-container {
   width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5; /* Default to portrait ratio */
+  aspect-ratio: 4 / 5; /* Maintain consistent ratio */
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  border-radius: 8px;
 }
 
-/* Image styles */
-.polaroid-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 4px;
+/* Artwork image styling */
+.artwork-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
-/* Polaroid title */
-.polaroid-title {
-  margin-top: 8px;
+/* Artwork title */
+.artwork-title {
+  margin-top: 12px;
   font-size: 14px;
   color: #333;
   word-wrap: break-word;

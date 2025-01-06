@@ -2,11 +2,11 @@ import React from "react";
 
 const Artwork = ({ imageUrl, title }) => {
   return (
-    <div className="polaroid">
-      <div className="polaroid-image-container">
-        <img src={imageUrl} alt={title} className="polaroid-image" />
+    <div className="artwork-card">
+      <div className="artwork-image-container">
+        <img src={imageUrl} alt={title} className="artwork-image" />
       </div>
-      <p className="polaroid-title">{title}</p>
+      <p className="artwork-title">{title}</p>
     </div>
   );
 };
