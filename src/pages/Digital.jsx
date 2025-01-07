@@ -3,7 +3,7 @@ import Artwork from "../components/Artwork";
 
 function Digital() {
   const artworks = [
-    { id: 1, imageUrl: "https://www.instagram.com/p/DAbwIazSO_A/?img_index=1", title: "Digital Art 1" },
+    { id: 1, imageUrl: "https://via.placeholder.com/300x400", title: "Digital Art 1" },
     { id: 2, imageUrl: "https://via.placeholder.com/500x300", title: "Digital Art 2" },
     { id: 3, imageUrl: "https://via.placeholder.com/300x300", title: "Digital Art 3" },
     { id: 4, imageUrl: "https://via.placeholder.com/300x450", title: "Digital Art 4" },
