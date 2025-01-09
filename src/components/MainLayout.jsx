@@ -73,11 +73,11 @@ const MainLayout = ({
         {/* Top Section */}
         <div className="mb-12">
           <div className="text-center mb-8">
-            <img
-              src="src/assets/icon.jpg"
-              alt="Artist Icon"
-              className="w-24 h-24 mx-auto rounded-full"
-            />
+          <img
+            src="/icon.jpg"  // Updated path
+            alt="Artist Icon"
+            className="w-24 h-24 mx-auto rounded-full"
+          />
             <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
           </div>
 
