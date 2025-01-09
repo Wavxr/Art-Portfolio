@@ -74,7 +74,7 @@ const MainLayout = ({
         <div className="mb-12">
           <div className="text-center mb-8">
           <img
-            src="/icon.jpg"  // Updated path
+            src="/nekoharu.jpg"  // Updated path
             alt="Artist Icon"
             className="w-24 h-24 mx-auto rounded-full"
           />
