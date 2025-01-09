@@ -12,6 +12,7 @@ function App() {
   const [activePage, setActivePage] = useState("Digital");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [adminSubPage, setAdminSubPage] = useState("Upload"); // State for Admin Tabs
 
   const getPageComponent = () => {
     switch (activePage) {
@@ -25,8 +26,13 @@ function App() {
         return <Haru />;
       case "About":
         return <About />;
-      case "Admin": // Add Admin Case
-        return <Admin />;
+      case "Admin":
+        return (
+          <Admin
+            adminSubPage={adminSubPage} // Pass adminSubPage state
+            setAdminSubPage={setAdminSubPage} // Pass setter function
+          />
+        );
       default:
         return <Digital />;
     }
@@ -37,9 +43,9 @@ function App() {
       <MainLayout
         activePage={activePage}
         setActivePage={setActivePage}
-        isLoggedIn={isLoggedIn} // Pass isLoggedIn to MainLayout
+        isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
-        setShowLoginModal={setShowLoginModal} // Pass modal control function
+        setShowLoginModal={setShowLoginModal}
       >
         {getPageComponent()}
       </MainLayout>
@@ -50,7 +56,7 @@ function App() {
             <Login
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
-              setShowLoginModal={setShowLoginModal} // Close modal from Login
+              setShowLoginModal={setShowLoginModal}
             />
           </div>
         </div>
