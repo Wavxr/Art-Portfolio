@@ -24,20 +24,20 @@ const AdminUpload = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!file) {
       alert("Please upload an image.");
       return;
     }
-
+  
     try {
       setUploading(true);
-
+  
       // Upload image to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", "nekoharu");
-
+  
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/dhdwnuup0/image/upload`,
         {
@@ -45,19 +45,19 @@ const AdminUpload = () => {
           body: formData,
         }
       );
-
+  
       const data = await response.json();
-
+  
       if (data.secure_url) {
-        // Store form data and image link in Firebase
+        // Store form data, image link, and public ID in Firebase
         await addDoc(artworksRef, {
           type,
           title: title || "Unknown Character",
           date,
           imageUrl: data.secure_url,
+          publicId: data.public_id, // Store the public ID here
         });
-
-
+  
         alert("Artwork uploaded successfully!");
         setType("");
         setTitle("");
@@ -73,7 +73,7 @@ const AdminUpload = () => {
       setUploading(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <form
