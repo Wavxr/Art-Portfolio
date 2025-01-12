@@ -1,7 +1,6 @@
 import React from "react";
 import AdminUpload from "./AdminUpload";
 import AdminDelete from "./AdminDelete";
-import AdminUpdate from "./AdminUpdate";
 
 const Admin = ({ adminSubPage, setAdminSubPage }) => {
   const renderAdminPage = () => {
@@ -10,22 +9,20 @@ const Admin = ({ adminSubPage, setAdminSubPage }) => {
         return <AdminUpload />;
       case "Delete":
         return <AdminDelete />;
-      case "Update":
-        return <AdminUpdate />;
       default:
         return <AdminUpload />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="flex flex-col items-center justify-center bg-gray-100">
       {/* Navigation Tabs */}
-      <nav className="flex justify-between space-x-4 mb-6">
+      <nav className="flex justify-center space-x-4 mb-6">
         <button
           onClick={() => setAdminSubPage("Upload")}
-          className={`w-full sm:w-auto px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 ${
+          className={`px-6 py-3 text-lg font-semibold rounded-lg shadow-md transition-all duration-300 ${
             adminSubPage === "Upload"
-              ? "bg-blue-500 text-white"
+              ? "bg-blue-500 text-white shadow-lg"
               : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
           }`}
         >
@@ -33,27 +30,17 @@ const Admin = ({ adminSubPage, setAdminSubPage }) => {
         </button>
         <button
           onClick={() => setAdminSubPage("Delete")}
-          className={`w-full sm:w-auto px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 ${
+          className={`px-6 py-3 text-lg font-semibold rounded-lg shadow-md transition-all duration-300 ${
             adminSubPage === "Delete"
-              ? "bg-blue-500 text-white"
+              ? "bg-blue-500 text-white shadow-lg"
               : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
           }`}
         >
           Delete Content
         </button>
-        <button
-          onClick={() => setAdminSubPage("Update")}
-          className={`w-full sm:w-auto px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 ${
-            adminSubPage === "Update"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
-          }`}
-        >
-          Update Content
-        </button>
       </nav>
       {/* Admin Page Content */}
-      <div className="mt-6">{renderAdminPage()}</div>
+      <div className="w-full max-w-3xl">{renderAdminPage()}</div>
     </div>
   );
 };

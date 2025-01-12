@@ -75,7 +75,7 @@ const AdminUpload = () => {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="flex justify-center bg-gray-100">
       <form
         className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md"
         onSubmit={handleSubmit}
