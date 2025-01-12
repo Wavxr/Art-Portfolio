@@ -49,7 +49,7 @@ const MainLayout = ({
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
       }`}
     >
-      {/* Left Side */}
+      {/* Left Sidebar */}
       <div
         className={`w-1/5 p-10 flex flex-col transition-colors duration-300 ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
@@ -70,20 +70,20 @@ const MainLayout = ({
           </button>
         </div>
 
-        {/* Top Section */}
-        <div className="mb-12">
-          <div className="text-center mb-8">
+        {/* Profile Section */}
+        <div className="text-center mb-12">
           <img
-            src="/nekoharu.jpg"  // Updated path
+            src="/nekoharu.jpg" // Profile Picture Path
             alt="Artist Icon"
             className="w-24 h-24 mx-auto rounded-full"
           />
-            <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
-          </div>
+          <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
+        </div>
 
-          {/* Links */}
-          <nav className="space-y-4">
-            {["Digital", "Traditional", "WaterColor", "Haru", "About"].map((page) => (
+        {/* Navigation Links */}
+        <nav className="space-y-4">
+          {["Digital", "Traditional", "WaterColor", "Haru", "About"].map(
+            (page) => (
               <button
                 key={page}
                 onClick={() => setActivePage(page)}
@@ -110,28 +110,26 @@ const MainLayout = ({
                 </span>
                 {page}
               </button>
-            ))}
-
-            {/* Add Admin Page Link for Logged-In User */}
-            {isLoggedIn && (
-              <button
-                onClick={() => setActivePage("Admin")}
-                className={`flex items-center w-full px-4 py-2 rounded-md ${
-                  activePage === "Admin"
-                    ? darkMode
-                      ? "bg-gray-600 text-yellow-300"
-                      : "bg-blue-500 text-white"
-                    : darkMode
-                    ? "hover:bg-gray-700"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <span className="mr-2">⚙️</span>
-                Admin
-              </button>
-            )}
-          </nav>
-        </div>
+            )
+          )}
+          {isLoggedIn && (
+            <button
+              onClick={() => setActivePage("Admin")}
+              className={`flex items-center w-full px-4 py-2 rounded-md ${
+                activePage === "Admin"
+                  ? darkMode
+                    ? "bg-gray-600 text-yellow-300"
+                    : "bg-blue-500 text-white"
+                  : darkMode
+                  ? "hover:bg-gray-700"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              <span className="mr-2">⚙️</span>
+              Admin
+            </button>
+          )}
+        </nav>
 
         {/* Important Links */}
         {activePage === "About" && (
@@ -175,8 +173,8 @@ const MainLayout = ({
         </footer>
       </div>
 
-      {/* Right Side (Make it scrollable) */}
-      <div className="w-4/5 p-12 overflow-y-auto">{children}</div>
+      {/* Main Content Area */}
+      <div className="w-4/5 p-12 overflow-y-auto">{React.cloneElement(children, { darkMode })}</div>
     </div>
   );
 };

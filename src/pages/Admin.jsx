@@ -2,28 +2,27 @@ import React from "react";
 import AdminUpload from "./AdminUpload";
 import AdminDelete from "./AdminDelete";
 
-const Admin = ({ adminSubPage, setAdminSubPage }) => {
+const Admin = ({ adminSubPage, setAdminSubPage, darkMode }) => {
   const renderAdminPage = () => {
     switch (adminSubPage) {
       case "Upload":
-        return <AdminUpload />;
+        return <AdminUpload darkMode={darkMode} />;
       case "Delete":
-        return <AdminDelete />;
+        return <AdminDelete darkMode={darkMode} />;
       default:
-        return <AdminUpload />;
+        return <AdminUpload darkMode={darkMode} />;
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100">
-      {/* Navigation Tabs */}
+    <div className={`flex flex-col items-center justify-center ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
       <nav className="flex justify-center space-x-4 mb-6">
         <button
           onClick={() => setAdminSubPage("Upload")}
           className={`px-6 py-3 text-lg font-semibold rounded-lg shadow-md transition-all duration-300 ${
             adminSubPage === "Upload"
-              ? "bg-blue-500 text-white shadow-lg"
-              : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
+              ? darkMode ? "bg-gray-600 text-yellow-300" : "bg-blue-500 text-white"
+              : darkMode ? "bg-gray-700 text-gray-200 hover:bg-gray-600" : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
           }`}
         >
           Upload Content
@@ -32,14 +31,13 @@ const Admin = ({ adminSubPage, setAdminSubPage }) => {
           onClick={() => setAdminSubPage("Delete")}
           className={`px-6 py-3 text-lg font-semibold rounded-lg shadow-md transition-all duration-300 ${
             adminSubPage === "Delete"
-              ? "bg-blue-500 text-white shadow-lg"
-              : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
+              ? darkMode ? "bg-gray-600 text-yellow-300" : "bg-blue-500 text-white"
+              : darkMode ? "bg-gray-700 text-gray-200 hover:bg-gray-600" : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
           }`}
         >
           Delete Content
         </button>
       </nav>
-      {/* Admin Page Content */}
       <div className="w-full max-w-3xl">{renderAdminPage()}</div>
     </div>
   );

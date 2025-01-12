@@ -4,7 +4,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 import "../styles/tailwind.css";
 
-const AdminUpload = () => {
+const AdminUpload = ({ darkMode }) => {
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -75,12 +75,12 @@ const AdminUpload = () => {
   };
   
   return (
-    <div className="flex justify-center bg-gray-100">
+    <div className={`flex justify-center ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
       <form
-        className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md"
+        className={`w-full max-w-lg p-6 rounded-lg shadow-md ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Upload Artwork</h2>
+        <h2 className="text-2xl font-bold mb-6">Upload Artwork</h2>
 
         {/* Type Selector */}
         <div className="mb-4">
@@ -172,7 +172,7 @@ const AdminUpload = () => {
         >
           {uploading ? "Uploading..." : "Submit"}
         </button>
-      </form>
+        </form>
     </div>
   );
 };
