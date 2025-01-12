@@ -21,7 +21,6 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 columns */
   gap: 24px; /* Space between items */
-  padding: 20px;
 }
 
 /* Artwork card styling */

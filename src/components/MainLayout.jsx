@@ -174,7 +174,7 @@ const MainLayout = ({
       </div>
 
       {/* Main Content Area */}
-      <div className="w-4/5 p-12 overflow-y-auto">{React.cloneElement(children, { darkMode })}</div>
+      <div className="w-4/5 p-10 overflow-y-auto">{React.cloneElement(children, { darkMode })}</div>
     </div>
   );
 };
