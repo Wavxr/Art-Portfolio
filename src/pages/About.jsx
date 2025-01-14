@@ -3,14 +3,14 @@ import { FaInstagram, FaTiktok, FaTwitter } from "react-icons/fa";
 
 const About = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-pink-100 via-white to-blue-100 p-6">
-      <div className="max-w-3xl bg-white rounded-lg shadow-xl p-8 text-center">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-sky-200 via-sky-100 to-blue-200">
+      <div className="max-w-3xl bg-white rounded-lg shadow-xl p-8 text-center transition-transform transform hover:scale-105 hover:shadow-2xl">
         {/* Avatar */}
         <div className="mb-6">
           <img
             src="/nekoharu.jpg"
             alt="Riri's Avatar"
-            className="mx-auto w-40 h-40 rounded-full border-4 border-pink-500"
+            className="mx-auto w-40 h-40 rounded-full border-4 border-blue-500"
           />
         </div>
 
@@ -20,7 +20,8 @@ const About = () => {
 
         {/* Bio */}
         <p className="text-gray-700 leading-relaxed mb-6">
-          Hi, I’m Riri, a <span className="font-semibold text-pink-500">self-taught art hobbyist </span> 
+          Hi, I’m Riri, a{" "}
+          <span className="font-semibold text-blue-500">self-taught art hobbyist </span> 
           with a love for all things creative! ✍️ At just 20 years old, I’m exploring the art world by drawing 
           what inspires me the most—be it fantasy, anime, or cozy cat vibes. 🐾
           <br />
@@ -67,7 +68,7 @@ const About = () => {
             href="https://www.instagram.com/0_nekoharu/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 text-white bg-pink-500 rounded-lg shadow-md hover:bg-pink-600 transition duration-300"
+            className="inline-block px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
           >
             View My Work on Instagram
           </a>

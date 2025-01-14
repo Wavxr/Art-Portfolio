@@ -38,16 +38,23 @@ function Digital() {
   }, []);
 
   return (
-    <div className="artwork-grid">
+    <div className="artwork-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
       {loading ? (
-        <p>Loading artworks...</p>
+        <p><strong>Loading artworks...</strong></p>
       ) : (
         artworks.map((art) => (
-          <Artwork key={art.id} imageUrl={art.imageUrl} title={art.title} />
+          <div
+            key={art.id}
+            className="transform transition-transform duration-50 ease-in-out hover:scale-105"
+          >
+            <Artwork imageUrl={art.imageUrl} title={<strong>{art.title}</strong>} />
+          </div>
         ))
       )}
     </div>
   );
+  
+  
 }
 
 export default Digital;
