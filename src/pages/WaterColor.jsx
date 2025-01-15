@@ -38,7 +38,7 @@ function WaterColor() {
   }, []);
 
   return (
-    <div className="artwork-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+    <div className="artwork-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-10">
       {loading ? (
         <p><strong>Loading artworks...</strong></p>
       ) : (

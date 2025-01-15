@@ -38,7 +38,7 @@ const Haru = () => {
   }, []);
 
   return (
-    <div>
+    <div className="m-10">
       <h2 className="text-2xl font-bold mb-4">Haru 🐾</h2>
       <p>Meet Haru, the adorable Siamese cat!</p>
       {loading ? (
