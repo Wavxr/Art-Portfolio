@@ -4,6 +4,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import DarkModeToggle from "./DarkModeToggle";
 import "../styles/tailwind.css";
 import { useTheme } from '../context/ThemeContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const MainLayout = ({
   activePage,
@@ -14,7 +15,8 @@ const MainLayout = ({
   const { darkMode, toggleDarkMode } = useTheme(); // Get both darkMode and toggleDarkMode from useTheme
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
-
+  const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     // Listen to authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -27,7 +29,6 @@ const MainLayout = ({
 
     return () => unsubscribe();
   }, []);
-
   // Remove the duplicate toggleDarkMode declaration
   const handleAuthAction = () => {
     if (isLoggedIn) {
@@ -42,6 +43,12 @@ const MainLayout = ({
       setShowLoginModal(true); // Show login modal
     }
   };
+  const handlePageChange = (page) => {
+    setActivePage(page);
+    setShowSidebar(false);
+    navigate(`/dashboard/${page.toLowerCase()}`);
+  };
+
   return (
     <div className="h-screen flex flex-col sm:flex-row overflow-hidden">
       {/* Mobile Header - Keep Fixed */}
@@ -103,15 +110,11 @@ const MainLayout = ({
           <nav className="space-y-2 flex-grow">
             {["Digital", "Traditional", "WaterColor", "Haru", "About"].map(
               (page) => (
-                // Inside the Navigation Links section
                 <button
                   key={page}
-                  onClick={() => {
-                    setActivePage(page);
-                    setShowSidebar(false);
-                  }}
+                  onClick={() => handlePageChange(page)}
                   className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 ${
-                    activePage === page
+                    location.pathname === `/dashboard/${page.toLowerCase()}`
                       ? darkMode
                         ? "bg-gray-700 text-yellow-300"
                         : "bg-blue-500 text-white"
@@ -137,7 +140,7 @@ const MainLayout = ({
             )}
             {isLoggedIn && (
               <button
-                onClick={() => setActivePage("Admin")}
+                onClick={() => handlePageChange("Admin")}
                 className={`flex items-center w-full px-4 py-2 rounded-md ${
                   activePage === "Admin"
                     ? darkMode
@@ -164,7 +167,7 @@ const MainLayout = ({
       {/* Main Content Area - Make Scrollable */}
       <div className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 h-screen overflow-y-auto">
         <div className="container mx-auto p-4">
-          {React.cloneElement(children, { darkMode })}
+          {children}
         </div>
       </div>
 
