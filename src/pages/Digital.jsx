@@ -38,16 +38,21 @@ function Digital() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 m-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
       {loading ? (
-        <p><strong>Loading artworks...</strong></p>
+        <div className="col-span-full flex justify-center items-center min-h-[300px]">
+          <div className="animate-pulse flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-gray-600 dark:text-gray-400 font-medium">Loading artworks...</p>
+          </div>
+        </div>
       ) : (
         artworks.map((art) => (
           <div
             key={art.id}
-            className="transform transition-transform duration-50 ease-in-out hover:scale-105"
+            className="transform transition-all duration-300 hover:translate-y-[-4px]"
           >
-            <Artwork imageUrl={art.imageUrl} title={<strong>{art.title}</strong>} />
+            <Artwork imageUrl={art.imageUrl} title={art.title} />
           </div>
         ))
       )}

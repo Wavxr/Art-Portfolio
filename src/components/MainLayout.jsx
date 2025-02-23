@@ -3,6 +3,7 @@ import { auth } from "../config/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import DarkModeToggle from "./DarkModeToggle";
 import "../styles/tailwind.css";
+import { useTheme } from '../context/ThemeContext';
 
 const MainLayout = ({
   activePage,
@@ -10,7 +11,7 @@ const MainLayout = ({
   children,
   setShowLoginModal, // Receive modal control function
 }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useTheme(); // Get both darkMode and toggleDarkMode from useTheme
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -18,18 +19,16 @@ const MainLayout = ({
     // Listen to authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setIsLoggedIn(true); // User is logged in
+        setIsLoggedIn(true);
       } else {
-        setIsLoggedIn(false); // User is logged out
+        setIsLoggedIn(false);
       }
     });
 
-    // Cleanup the listener on unmount
     return () => unsubscribe();
   }, []);
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
-
+  // Remove the duplicate toggleDarkMode declaration
   const handleAuthAction = () => {
     if (isLoggedIn) {
       signOut(auth)
@@ -45,11 +44,8 @@ const MainLayout = ({
   };
 
   return (
-    <div
-      className={`flex h-screen font-inconsolata transition-colors duration-300 ${
-        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
-      }`}
-    >
+    <div className={`flex h-screen font-inconsolata transition-colors duration-300 
+      ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
       {/* Hamburger Menu */}
       <button
         onClick={() => setShowSidebar(!showSidebar)}
@@ -69,10 +65,7 @@ const MainLayout = ({
         >
           {/* Header Section */}
           <div className="mb-8 flex justify-between items-center">
-            <DarkModeToggle
-              darkMode={darkMode}
-              toggleDarkMode={toggleDarkMode}
-            />
+            <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <button
               onClick={handleAuthAction}
               className={`ml-4 px-4 py-2 rounded-md text-sm font-medium ${

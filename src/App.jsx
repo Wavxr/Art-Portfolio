@@ -7,6 +7,7 @@ import Haru from "./pages/Haru";
 import About from "./pages/About";
 import Admin from "./pages/Admin"; // Import Admin Page
 import Login from "./components/Login";
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   const [activePage, setActivePage] = useState("Digital");
@@ -39,20 +40,21 @@ function App() {
   };
 
   return (
-    <>
-      <MainLayout
-        activePage={activePage}
-        setActivePage={setActivePage}
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        setShowLoginModal={setShowLoginModal}
-      >
-        {getPageComponent()}
-      </MainLayout>
+    <ThemeProvider>
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+        <MainLayout
+          activePage={activePage}
+          setActivePage={setActivePage}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          setShowLoginModal={setShowLoginModal}
+        >
+          {getPageComponent()}
+        </MainLayout>
 
       {showLoginModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center transition-all duration-300">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl transform transition-all duration-300 hover:scale-[1.02]">
             <Login
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
@@ -61,7 +63,8 @@ function App() {
           </div>
         </div>
       )}
-    </>
+    </div>
+    </ThemeProvider>
   );
 }
 
