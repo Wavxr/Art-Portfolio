@@ -42,12 +42,10 @@ const MainLayout = ({
       setShowLoginModal(true); // Show login modal
     }
   };
-
   return (
-    <div className={`flex flex-col sm:flex-row min-h-screen font-inconsolata transition-colors duration-300 
-      ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
-      {/* Mobile Header */}
-      <div className="sm:hidden fixed top-0 left-0 right-0 h-16 px-4 flex items-center justify-between bg-opacity-90 backdrop-blur-md z-50 border-b border-gray-200 dark:border-gray-700">
+    <div className="h-screen flex flex-col sm:flex-row overflow-hidden">
+      {/* Mobile Header - Keep Fixed */}
+      <div className="sm:hidden fixed top-0 left-0 right-0 h-16 px-4 flex items-center justify-between bg-white dark:bg-gray-900 bg-opacity-90 backdrop-blur-md z-50 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
           <img
             src="/nekoharu.jpg"
@@ -66,9 +64,9 @@ const MainLayout = ({
         </button>
       </div>
 
-      {/* Sidebar */}
+      {/* Sidebar - Keep Fixed */}
       <div
-        className={`fixed sm:static inset-y-0 left-0 w-[280px] transform transition-transform duration-300 ease-in-out z-40
+        className={`fixed sm:static inset-y-0 left-0 w-[280px] h-full overflow-y-auto transform transition-transform duration-300 ease-in-out z-40
           ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
           sm:translate-x-0 ${
             darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
@@ -102,7 +100,7 @@ const MainLayout = ({
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-2">
+          <nav className="space-y-2 flex-grow">
             {["Digital", "Traditional", "WaterColor", "Haru", "About"].map(
               (page) => (
                 // Inside the Navigation Links section
@@ -155,11 +153,16 @@ const MainLayout = ({
               </button>
             )}
           </nav>
+          {/* Credit Line */}
+          <div className="text-center mt-auto pt-4 text-xs text-gray-500 dark:text-gray-400">
+            <p>© {new Date().getFullYear()}</p>
+            <p>johnwaveraguilar@gmail.com</p>
+          </div>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 transition-all duration-300">
+      {/* Main Content Area - Make Scrollable */}
+      <div className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 h-screen overflow-y-auto">
         <div className="container mx-auto p-4">
           {React.cloneElement(children, { darkMode })}
         </div>

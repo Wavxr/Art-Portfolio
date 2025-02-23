@@ -38,7 +38,7 @@ function Digital() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 min-h-full">
       {loading ? (
         <div className="col-span-full flex justify-center items-center min-h-[300px]">
           <div className="animate-pulse flex flex-col items-center gap-4">
