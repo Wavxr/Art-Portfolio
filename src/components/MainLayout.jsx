@@ -44,64 +44,81 @@ const MainLayout = ({
   };
 
   return (
-    <div className={`flex h-screen font-inconsolata transition-colors duration-300 
+    <div className={`flex flex-col sm:flex-row min-h-screen font-inconsolata transition-colors duration-300 
       ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
-      {/* Hamburger Menu */}
-      <button
-        onClick={() => setShowSidebar(!showSidebar)}
-        className={`sm:hidden fixed top-4 right-4 z-50 p-2 rounded-full ${
-          darkMode ? "bg-gray-600 text-white" : "bg-blue-500 text-white"
-        }`}
-      >
-        {showSidebar ? "Close" : "Menu"}
-      </button>
+      {/* Mobile Header */}
+      <div className="sm:hidden fixed top-0 left-0 right-0 h-16 px-4 flex items-center justify-between bg-opacity-90 backdrop-blur-md z-50 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2">
+          <img
+            src="/nekoharu.jpg"
+            alt="Artist Icon"
+            className="w-8 h-8 rounded-full"
+          />
+          <h1 className="font-bold">0_nekoharu</h1>
+        </div>
+        <button
+          onClick={() => setShowSidebar(!showSidebar)}
+          className={`p-2 rounded-lg ${
+            darkMode ? "bg-gray-800" : "bg-white"
+          } shadow-md`}
+        >
+          {showSidebar ? "✕" : "☰"}
+        </button>
+      </div>
 
       {/* Sidebar */}
-      {showSidebar || window.innerWidth >= 640 ? (
-        <div
-          className={`absolute sm:static top-0 left-0 h-screen sm:h-auto w-4/5 sm:w-1/4 md:w-1/5 p-4 sm:p-10 flex flex-col transition-transform duration-300 ${
+      <div
+        className={`fixed sm:static inset-y-0 left-0 w-[280px] transform transition-transform duration-300 ease-in-out z-40
+          ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
+          sm:translate-x-0 ${
             darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-          } ${showSidebar ? "z-50" : ""}`} // Ensures the sidebar overlays the content
-        >
-          {/* Header Section */}
-          <div className="mb-8 flex justify-between items-center">
+          } shadow-xl sm:shadow-none`}
+      >
+        <div className="flex flex-col h-full p-6 pt-20 sm:pt-6">
+          {/* Profile Section */}
+          <div className="text-center mb-8">
+            <img
+              src="/nekoharu.jpg"
+              alt="Artist Icon"
+              className="w-24 h-24 mx-auto rounded-full shadow-lg border-2 border-gray-200 dark:border-gray-700"
+            />
+            <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
+          </div>
+
+          {/* Controls Section */}
+          <div className="flex items-center justify-between mb-8 px-2">
             <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <button
               onClick={handleAuthAction}
-              className={`ml-4 px-4 py-2 rounded-md text-sm font-medium ${
-                darkMode
-                  ? "bg-gray-600 text-white hover:bg-gray-500"
-                  : "bg-blue-500 text-white hover:bg-blue-400"
-              }`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                ${
+                  darkMode
+                    ? "bg-gray-700 hover:bg-gray-600"
+                    : "bg-blue-500 hover:bg-blue-600"
+                } text-white`}
             >
               {isLoggedIn ? "Logout" : "Login"}
             </button>
           </div>
 
-          {/* Profile Section */}
-          <div className="text-center mb-12">
-            <img
-              src="/nekoharu.jpg" // Profile Picture Path
-              alt="Artist Icon"
-              className="w-24 h-24 mx-auto rounded-full"
-            />
-            <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
-          </div>
-
           {/* Navigation Links */}
-          <nav className="space-y-4">
+          <nav className="space-y-2">
             {["Digital", "Traditional", "WaterColor", "Haru", "About"].map(
               (page) => (
+                // Inside the Navigation Links section
                 <button
                   key={page}
-                  onClick={() => setActivePage(page)}
-                  className={`flex items-center w-full px-4 py-2 rounded-md ${
+                  onClick={() => {
+                    setActivePage(page);
+                    setShowSidebar(false);
+                  }}
+                  className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 ${
                     activePage === page
                       ? darkMode
-                        ? "bg-gray-600 text-yellow-300"
+                        ? "bg-gray-700 text-yellow-300"
                         : "bg-blue-500 text-white"
                       : darkMode
-                      ? "hover:bg-gray-700"
+                      ? "hover:bg-gray-700/50"
                       : "hover:bg-gray-100"
                   }`}
                 >
@@ -138,54 +155,23 @@ const MainLayout = ({
               </button>
             )}
           </nav>
-
-          {/* Important Links */}
-          {activePage === "About" && (
-            <div className="mt-4 space-y-2">
-              <a
-                href="https://instagram.com/0_nekoharu/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`block text-center font-semibold ${
-                  darkMode
-                    ? "text-pink-400 hover:text-pink-300"
-                    : "text-pink-500 hover:text-pink-400"
-                }`}
-              >
-                🌸 Instagram
-              </a>
-              <button
-                onClick={() => alert("Share this portfolio!")}
-                className={`block w-full text-center font-semibold ${
-                  darkMode
-                    ? "text-blue-400 hover:text-blue-300"
-                    : "text-blue-500 hover:text-blue-400"
-                }`}
-              >
-                🔗 Share
-              </button>
-            </div>
-          )}
-
-          {/* Footer */}
-          <footer className="mt-auto text-center text-xs">
-            <p>
-              <a
-                href="mailto:johnwaveraguilar@gmail.com"
-                className="hover:underline"
-              >
-                johnwaveraguilar@gmail.com
-              </a>
-            </p>
-            <p>&copy; {new Date().getFullYear()}</p>
-          </footer>
         </div>
-      ) : null}
+      </div>
 
       {/* Main Content Area */}
-      <div className="w-full sm:w-4/5 overflow-y-auto">
-        {React.cloneElement(children, { darkMode })}
+      <div className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 transition-all duration-300">
+        <div className="container mx-auto p-4">
+          {React.cloneElement(children, { darkMode })}
+        </div>
       </div>
+
+      {/* Mobile Overlay */}
+      {showSidebar && (
+        <div
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 sm:hidden"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
     </div>
   );
 };
