@@ -88,15 +88,6 @@ const MainLayout = ({
           } shadow-xl sm:shadow-none`}
       >
         <div className="flex flex-col h-full p-6 pt-20 sm:pt-6">
-          {/* Close button for mobile - visible only in sidebar */}
-          <div className="sm:hidden flex justify-end -mt-4 mb-2">
-            <button
-              onClick={() => setShowSidebar(false)}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
-            >
-              ✕
-            </button>
-          </div>
         {/* Profile Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
