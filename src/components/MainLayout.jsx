@@ -5,36 +5,42 @@ import DarkModeToggle from "./DarkModeToggle";
 import "../styles/tailwind.css";
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from "framer-motion";
 
 const MainLayout = ({
   activePage,
-  setActivePage,
-  children,
-  setShowLoginModal, // Receive modal control function
+  isLoggedIn: propIsLoggedIn,
+  setIsLoggedIn: propSetIsLoggedIn,
+  setShowLoginModal,
+  children
 }) => {
-  const { darkMode, toggleDarkMode } = useTheme(); // Get both darkMode and toggleDarkMode from useTheme
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { darkMode, toggleDarkMode } = useTheme();
+  const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn || false);
   const [showSidebar, setShowSidebar] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
   useEffect(() => {
     // Listen to authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
+        if (propSetIsLoggedIn) propSetIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
+        if (propSetIsLoggedIn) propSetIsLoggedIn(false);
       }
     });
 
     return () => unsubscribe();
-  }, []);
-  // Remove the duplicate toggleDarkMode declaration
+  }, [propSetIsLoggedIn]);
+
   const handleAuthAction = () => {
     if (isLoggedIn) {
       signOut(auth)
         .then(() => {
           setIsLoggedIn(false);
+          if (propSetIsLoggedIn) propSetIsLoggedIn(false);
         })
         .catch((error) => {
           console.error("Error during sign out:", error);
@@ -43,8 +49,8 @@ const MainLayout = ({
       setShowLoginModal(true); // Show login modal
     }
   };
+
   const handlePageChange = (page) => {
-    setActivePage(page);
     setShowSidebar(false);
     navigate(`/dashboard/${page.toLowerCase()}`);
   };
@@ -52,7 +58,7 @@ const MainLayout = ({
   return (
     <div className="h-screen flex flex-col sm:flex-row overflow-hidden">
       {/* Mobile Header - Keep Fixed */}
-      <div className="sm:hidden fixed top-0 left-0 right-0 h-16 px-4 flex items-center justify-between bg-white dark:bg-gray-900 bg-opacity-90 backdrop-blur-md z-50 border-b border-gray-200 dark:border-gray-700">
+      <div className="sm:hidden fixed top-0 left-0 right-0 h-16 px-4 flex items-center justify-between bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg z-50 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
           <img
             src="/nekoharu.jpg"
@@ -70,28 +76,53 @@ const MainLayout = ({
           {showSidebar ? "✕" : "☰"}
         </button>
       </div>
-
-      {/* Sidebar - Keep Fixed */}
+{/* Sidebar - Keep Fixed */}
       <div
-        className={`fixed sm:static inset-y-0 left-0 w-[280px] h-full overflow-y-auto transform transition-transform duration-300 ease-in-out z-40
+        className={`fixed sm:static inset-y-0 left-0 w-[280px] h-full overflow-y-auto z-40
           ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
-          sm:translate-x-0 ${
-            darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+          sm:translate-x-0 transition-transform duration-300 ease-in-out
+          ${
+            darkMode 
+              ? "bg-gradient-to-b from-gray-800 to-gray-900 text-white" 
+              : "bg-gradient-to-b from-white to-gray-50 text-gray-900"
           } shadow-xl sm:shadow-none`}
       >
         <div className="flex flex-col h-full p-6 pt-20 sm:pt-6">
-          {/* Profile Section */}
-          <div className="text-center mb-8">
-            <img
-              src="/nekoharu.jpg"
-              alt="Artist Icon"
-              className="w-24 h-24 mx-auto rounded-full shadow-lg border-2 border-gray-200 dark:border-gray-700"
-            />
-            <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
+          {/* Close button for mobile - visible only in sidebar */}
+          <div className="sm:hidden flex justify-end -mt-4 mb-2">
+            <button
+              onClick={() => setShowSidebar(false)}
+              className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
+            >
+              ✕
+            </button>
           </div>
+        {/* Profile Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-center mb-8"
+          >
+            <div className="relative mx-auto w-24 h-24 rounded-full overflow-hidden border-2 border-blue-500 dark:border-blue-400 p-1">
+              <img
+                src="/nekoharu.jpg"
+                alt="Artist Icon"
+                className="w-full h-full object-cover rounded-full"
+              />
+              <div className="absolute inset-0 rounded-full border-4 border-white dark:border-gray-800 opacity-50"></div>
+            </div>
+            <h1 className="mt-4 text-lg font-bold">0_nekoharu</h1>
+            <div className="w-12 h-1 bg-blue-500 dark:bg-blue-400 mx-auto mt-2 rounded-full"></div>
+          </motion.div>
 
           {/* Controls Section */}
-          <div className="flex items-center justify-between mb-8 px-2">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="flex items-center justify-between mb-8 px-2"
+          >
             <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <button
               onClick={handleAuthAction}
@@ -104,10 +135,15 @@ const MainLayout = ({
             >
               {isLoggedIn ? "Logout" : "Login"}
             </button>
-          </div>
+          </motion.div>
 
           {/* Navigation Links */}
-          <nav className="space-y-2 flex-grow">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 h-screen overflow-y-auto"
+          >
             {["Digital", "Traditional", "WaterColor", "Haru", "About"].map(
               (page) => (
                 <button
@@ -155,26 +191,35 @@ const MainLayout = ({
                 Admin
               </button>
             )}
-          </nav>
+          </motion.div>
           {/* Credit Line */}
-          <div className="text-center mt-auto pt-4 text-xs text-gray-500 dark:text-gray-400">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="text-center mt-auto pt-4 text-xs text-gray-500 dark:text-gray-400"
+          >
             <p>© {new Date().getFullYear()}</p>
             <p>johnwaveraguilar@gmail.com</p>
-          </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* Main Content Area - Make Scrollable */}
-      <div className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 h-screen overflow-y-auto">
-        <div className="container mx-auto p-4">
-          {children}
-        </div>
-      </div>
+{/* Main Content Area - Make Scrollable */}
+<motion.div 
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.2, duration: 0.5 }}
+  className="flex-1 w-full sm:w-auto mt-16 sm:mt-0 h-screen overflow-y-auto"
+>
+  <div className="w-full h-full pb-16 sm:pb-0">
+    {children}
+  </div>
+</motion.div>
 
       {/* Mobile Overlay */}
       {showSidebar && (
         <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 sm:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 sm:hidden"
           onClick={() => setShowSidebar(false)}
         />
       )}

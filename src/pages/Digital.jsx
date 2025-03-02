@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { db } from "../config/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import Artwork from "../components/Artwork";
+import ArtworkModal from "../components/ArtworkModal";
 
 function Digital() {
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
 
   useEffect(() => {
     const fetchArtworks = async () => {
@@ -37,24 +39,51 @@ function Digital() {
     fetchArtworks();
   }, []);
 
+  // Split artworks into columns for masonry layout
+  const getColumnArtworks = () => {
+    const columns = [[], [], []]; // 3 columns for desktop
+    
+    artworks.forEach((artwork, index) => {
+      const columnIndex = index % columns.length;
+      columns[columnIndex].push(artwork);
+    });
+    
+    return columns;
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 min-h-full">
+    <div className="w-full p-4 bg-white dark:bg-gray-900">
       {loading ? (
-        <div className="col-span-full flex justify-center items-center min-h-[300px]">
-          <div className="animate-pulse flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-gray-600 dark:text-gray-400 font-medium">Loading artworks...</p>
-          </div>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       ) : (
-        artworks.map((art) => (
-          <div
-            key={art.id}
-            className="transform transition-all duration-300 hover:translate-y-[-4px]"
-          >
-            <Artwork imageUrl={art.imageUrl} title={art.title} />
-          </div>
-        ))
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {getColumnArtworks().map((column, columnIndex) => (
+            <div key={columnIndex} className="flex flex-col gap-4">
+              {column.map((artwork) => (
+                <div 
+                  key={artwork.id}
+                  onClick={() => setSelectedArtwork(artwork)}
+                  className="cursor-pointer transform transition-transform hover:scale-[1.02]"
+                >
+                  <Artwork 
+                    imageUrl={artwork.imageUrl} 
+                    title={artwork.title} 
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Artwork Modal */}
+      {selectedArtwork && (
+        <ArtworkModal 
+          artwork={selectedArtwork} 
+          onClose={() => setSelectedArtwork(null)} 
+        />
       )}
     </div>
   );
