@@ -35,6 +35,27 @@ const MainLayout = ({
     return () => unsubscribe();
   }, [propSetIsLoggedIn]);
 
+  // Add this useEffect to handle mobile viewport height adjustments
+  useEffect(() => {
+    // Function to update CSS variable with the actual viewport height
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    // Set the initial value
+    setVH();
+
+    // Update on resize and orientation change
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+
+    return () => {
+      window.removeEventListener('resize', setVH);
+      window.removeEventListener('orientationchange', setVH);
+    };
+  }, []);
+
   const handleAuthAction = () => {
     if (isLoggedIn) {
       signOut(auth)
@@ -65,7 +86,9 @@ const MainLayout = ({
             alt="Artist Icon"
             className="w-8 h-8 rounded-full"
           />
-          <h1 className="font-bold">0_nekoharu</h1>
+          <h1 className={`font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
+            0_nekoharu
+          </h1>
         </div>
         <button
           onClick={() => setShowSidebar(!showSidebar)}
@@ -76,9 +99,9 @@ const MainLayout = ({
           {showSidebar ? "✕" : "☰"}
         </button>
       </div>
-{/* Sidebar - Keep Fixed */}
+      {/* Sidebar - Keep Fixed */}
       <div
-        className={`fixed sm:static inset-y-0 left-0 w-[280px] h-full overflow-y-auto z-40
+        className={`fixed sm:static inset-y-0 left-0 w-[280px] h-[100vh] h-[calc(var(--vh,1vh)*100)] overflow-y-auto z-40
           ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
           sm:translate-x-0 transition-transform duration-300 ease-in-out
           ${
@@ -107,6 +130,7 @@ const MainLayout = ({
             <div className="w-12 h-1 bg-blue-500 dark:bg-blue-400 mx-auto mt-2 rounded-full"></div>
           </motion.div>
 
+          {/* Rest of the component remains unchanged */}
           {/* Controls Section */}
           <motion.div 
             initial={{ opacity: 0 }}
