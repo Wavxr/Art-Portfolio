@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { db } from "../config/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import Artwork from "../components/Artwork";
+import { useTheme } from "../context/ThemeContext";
 
 const Haru = () => {
   const [haruPhotos, setHaruPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { darkMode } = useTheme();
 
   useEffect(() => {
     const fetchHaruPhotos = async () => {
@@ -39,8 +41,12 @@ const Haru = () => {
 
   return (
     <div className="m-10">
-      <h2 className="text-2xl font-bold mb-4">Haru 🐾</h2>
-      <p>Meet Haru, the adorable Siamese cat!</p>
+      <h2 className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"} mb-4`}>
+      Haru 🐾
+    </h2>
+    <p className={`font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
+      Meet Haru, the adorable Siamese cat!
+    </p>
       {loading ? (
         <p>Loading Haru's photos...</p>
       ) : (
