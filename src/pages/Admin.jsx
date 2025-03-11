@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminUpload from "./AdminUpload";
 import AdminDelete from "./AdminDelete";
 
-const Admin = ({ adminSubPage, setAdminSubPage, darkMode }) => {
+const Admin = ({ darkMode }) => {
+  const [adminSubPage, setAdminSubPage] = useState("Upload");
+
   const renderAdminPage = () => {
     switch (adminSubPage) {
       case "Upload":
@@ -15,7 +17,7 @@ const Admin = ({ adminSubPage, setAdminSubPage, darkMode }) => {
   };
 
   return (
-    <div className={` m-10 flex flex-col items-center justify-center ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
+    <div className={`m-10 flex flex-col items-center justify-center ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
       <nav className="flex justify-center space-x-4 mb-6">
         <button
           onClick={() => setAdminSubPage("Upload")}
